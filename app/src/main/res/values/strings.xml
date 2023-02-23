@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Conversor de Moedas</string>
+
+    //parte da API
+    <string name="info_da_moeda_base">1,00 %1$s hoje</string>
+    <string name="info_da_moeda_alvo">%1$s %2$s</string>
+    <string name="digite_um_valor_para_conversao">Digite um valor para conversão</string>
+    <string name="currency">currency</string>
+    <string name="troca_de_moedas">troca de moedas</string>
+
+
+    //lista de moedas do app
+    <string-array name="currency_list_default">
+        //Real brasileiro
+        <item>brl</item>
+        //Dólar americano
+        <item>usd</item>
+        /Euro
+        <item>eur</item>
+        //Libra esterlina britânica
+        <item>gbp</item>
+        //Iene japonês
+        <item>jpy</item>
+        //Dólar australiano
+        <item>aud</item>
+        //Franco suiço
+        <item>chf</item>
+        //Dólar canadense
+        <item>cad</item>
+        //Yuan chinês
+        <item>rmb</item>
+    </string-array>
+</resources>

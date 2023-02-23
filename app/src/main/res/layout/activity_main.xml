@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_main"
+        android:textAlignment="center"
+        tools:context=".MainActivity">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <TextView
+            android:id="@+id/baseCurrencyConversionRateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_da_moeda_base"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal1" />
+
+        <TextView
+            android:id="@+id/targetCurrencyConversionRateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/info_da_moeda_alvo"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/baseCurrencyConversionRateTextView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHorizontal2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVertical1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineVertical2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <Spinner
+            android:id="@+id/spinnerSelectorBaseCurrency"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:background="@drawable/background_spinner"
+            android:textAlignment="center"
+            android:contentDescription="@string/currency"
+            app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical1"
+            app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal2" />
+
+        <EditText
+            android:id="@+id/editTextMonetaryValueToBeConverted"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/background_edit_text"
+            android:hint="@string/digite_um_valor_para_conversao"
+            android:inputType="numberDecimal"
+            android:paddingHorizontal="16dp"
+            android:textColorHint="@color/hint_color"
+            app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical1"
+            app:layout_constraintTop_toBottomOf="@id/spinnerSelectorBaseCurrency"
+            tools:ignore="Autofill,LabelFor" />
+
+        <Button
+            android:id="@+id/buttonCurrencyReversal"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_currency_exchange_48dp"
+            android:contentDescription="@string/troca_de_moedas"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMonetaryValueToBeConverted" />
+
+        <Spinner
+            android:id="@+id/spinnerSelectorTargetCurrency"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_spinner"
+            android:contentDescription="@string/currency"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical1"
+            app:layout_constraintTop_toBottomOf="@id/buttonCurrencyReversal" />
+
+        <TextView
+            android:id="@+id/textViewMonetaryValueConverted"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="4dp"
+            android:autofillHints=""
+            android:background="@drawable/background_edit_text"
+            android:clickable="false"
+            android:ems="10"
+            android:gravity="start|center_vertical"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical1"
+            app:layout_constraintTop_toBottomOf="@id/spinnerSelectorTargetCurrency"
+            tools:ignore="LabelFor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
