@@ -23,20 +23,18 @@ import com.example.conversordemoedas.viewmodel.main.MainViewModelFactory
  */
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var mainInteraction: MainInteraction
+    private lateinit var viewModel: MainViewModel
+    private lateinit var currencyList: List<String>
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
+
+    private val retrofitService = RetrofitService.getInstance()
+
     object Singleton{
         const val DEFAULT_BASE_CURRENCY = "brl"
         const val DEFAULT_TARGET_CURRENCY = "usd"
     }
-
-    private lateinit var binding: ActivityMainBinding
-
-    private lateinit var mainInteraction: MainInteraction
-
-    private lateinit var viewModel: MainViewModel
-
-    private lateinit var spinnerAdapter: ArrayAdapter<String>
-
-    private val retrofitService = RetrofitService.getInstance()
 
     /**
      * Responsavel por instanciar os paramêtros base da aplicação
@@ -64,26 +62,17 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onStart() {
         super.onStart()
-
-        currencyListObserver()
-
-        conversionRateObserver()
-
-        editTextMonetaryValueToBeConverterObserver()
-
-        textViewMonetaryValueConvertedObserver()
-
-        errorMessageObserver()
-
-        Log.i("emerson", "OnStart")
+        observeCurrencyList()
+        observeConversionRate()
+        observeEditTextMonetaryValueToBeConverter()
+        observeTextViewMonetaryValueConverted()
+        observeErrorMessage()
     }
 
     override fun onResume() {
         super.onResume()
-
         setButtonReverse()
         binding.editTextMonetaryValueToBeConverted.addTextChangedListener(textWatcher)
-
     }
 
     /**
@@ -91,26 +80,22 @@ class MainActivity : AppCompatActivity() {
      * Quando receber a lista de moedas e instancia o adapter
      * @see setDefaultCurrencies() configura os valores padrão do spinner
      */
-    private fun currencyListObserver() {
-
-        viewModel.currencyListObserver.observe(this@MainActivity) { currencyList ->
-
-            spinnerAdapter = ArrayAdapter(baseContext, R.layout.drop_down_item, currencyList)
-            setDefaultCurrencies(currencyList)
-            println(currencyList)
-
+    private fun observeCurrencyList() {
+        viewModel.currencyListObserver.observe(this) { list ->
+            currencyList = list
+            spinnerAdapter = ArrayAdapter(this, R.layout.drop_down_item, list)
+            setDefaultCurrencies(list)
+            println(list)
         }
     }
-
-    private fun setDefaultCurrencies(currencyList: List<String>) {
-
-        binding.apply {
-
-            spinnerSelectorBaseCurrency.adapter = spinnerAdapter
-            spinnerSelectorTargetCurrency.adapter = spinnerAdapter
-            spinnerSelectorBaseCurrency.setSelection(currencyList.indexOf(Singleton.DEFAULT_BASE_CURRENCY))
-            spinnerSelectorTargetCurrency.setSelection(currencyList.indexOf(Singleton.DEFAULT_TARGET_CURRENCY))
-
+    private fun setDefaultCurrencies(list: List<String>) {
+        binding.spinnerSelectorBaseCurrency.apply {
+            adapter = spinnerAdapter
+            setSelection(list.indexOf(Singleton.DEFAULT_BASE_CURRENCY))
+        }
+        binding.spinnerSelectorTargetCurrency.apply {
+            adapter = spinnerAdapter
+            setSelection(list.indexOf(Singleton.DEFAULT_TARGET_CURRENCY))
         }
     }
 
@@ -121,12 +106,12 @@ class MainActivity : AppCompatActivity() {
      * @if Função responsável por verificar se tem digitado no EditText, senão apenas atualiza a conversionRate
      * Se sim remove o textChangedListener para evitar ciclo infinito e chama a função de formatação.
      */
-    private fun conversionRateObserver() {
+    private fun observeConversionRate() {
 
-        viewModel.conversionRateObserver.observe(this@MainActivity) { conversionRate ->
+        viewModel.conversionRateObserver.observe(this) { rate ->
 
-            println(conversionRate)
-            setDefaultTextInformation(conversionRate)
+            spinnerListener()
+            setDefaultTextInformation(rate)
 
             if(binding.editTextMonetaryValueToBeConverted.text.toString().isNotEmpty()){
                 binding.editTextMonetaryValueToBeConverted.removeTextChangedListener(textWatcher)
@@ -187,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
             var userSelect = false
 
-            val touchListener = View.OnTouchListener { _, _ ->
+            val touchListener = View.OnTouchListener { v, event ->
                 userSelect = true
                 false
             }
@@ -227,7 +212,7 @@ class MainActivity : AppCompatActivity() {
      * @see binding "" addTextChangedListener() Adiciona novamente o Listener,
      * para voltar a verificar se um novo texto foi digitado.
      */
-    private fun editTextMonetaryValueToBeConverterObserver() {
+    private fun observeEditTextMonetaryValueToBeConverter() {
         viewModel.editTextMonetaryValueToBeConverted.observe(this@MainActivity){ formattedText ->
 
             println("editText: $formattedText")
@@ -238,7 +223,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun textViewMonetaryValueConvertedObserver() {
+    private fun observeTextViewMonetaryValueConverted() {
         viewModel.textViewMonetaryValueConverted.observe(this@MainActivity){ formattedText ->
 
             println("textView: $formattedText")
@@ -250,7 +235,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * observa se um erro foi gerado no callback de dados da aplicação
      */
-    private fun errorMessageObserver() {
+    private fun observeErrorMessage() {
         viewModel.errorMessageCallBack.observe(this@MainActivity) { errorMessage ->
             Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_SHORT).show()
         }
@@ -276,7 +261,6 @@ class MainActivity : AppCompatActivity() {
                 spinnerSelectorTargetCurrency.setSelection(baseCurrencyPosition)
 
                 mainInteraction.reverseCurrencies()
-                spinnerListener()
 
             }
         }
