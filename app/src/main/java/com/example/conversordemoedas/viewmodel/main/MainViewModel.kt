@@ -15,9 +15,9 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
 
 
 
-    private var baseCurrencyCode = String()
-    private var targetCurrencyCode = String()
-    private var previousCurrencyCode = String()
+    private var baseCurrencyCode : String = ""
+    private var targetCurrencyCode : String = ""
+    private var previousCurrencyCode : String = ""
 
     val currencyList = mutableListOf<String>()
     val currencyListObserver = MutableLiveData<List<String>>()
@@ -25,10 +25,10 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     var conversionRate : Double = 0.0
     val conversionRateObserver = MutableLiveData<Double>()
 
-    private var monetaryValueEditText = String()
+    private var monetaryValueEditText : String = ""
     val editTextMonetaryValueToBeConverted = MutableLiveData<String>()
 
-    private var monetaryValueTextView = String()
+    private var monetaryValueTextView : String = ""
     val textViewMonetaryValueConverted = MutableLiveData<String>()
 
     val errorMessageCallBack = MutableLiveData<String>()
@@ -51,8 +51,7 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     }
 
     fun reverseCurrencies() {
-        baseCurrencyCode = targetCurrencyCode
-        targetCurrencyCode = previousCurrencyCode
+        baseCurrencyCode = targetCurrencyCode.also { targetCurrencyCode = baseCurrencyCode }
 
         if (monetaryValueEditText.isEmpty())
             previousCurrencyCode = baseCurrencyCode
@@ -61,9 +60,11 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     }
 
     private fun setDefaultCurrency() {
-        previousCurrencyCode = MainActivity.Singleton.DEFAULT_BASE_CURRENCY
-        baseCurrencyCode = MainActivity.Singleton.DEFAULT_BASE_CURRENCY
-        targetCurrencyCode = MainActivity.Singleton.DEFAULT_TARGET_CURRENCY
+        val defaultBaseCurrency = MainActivity.Singleton.DEFAULT_BASE_CURRENCY
+        val defaultTargetCurrency = MainActivity.Singleton.DEFAULT_TARGET_CURRENCY
+        previousCurrencyCode = defaultBaseCurrency
+        baseCurrencyCode = defaultBaseCurrency
+        targetCurrencyCode = defaultTargetCurrency
     }
 
     fun getAllCurrencies(context: Context) {
@@ -116,14 +117,13 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
 
     fun textFormattingMonetaryValue(monetaryValueTextFormatted: String) {
 
-        val unformattedMonetaryValue = clearMonetaryValueFormatting(baseCurrencyCode, monetaryValueTextFormatted)
-
+        val unformattedMonetaryValue = Formatter.clearTextFormatting(baseCurrencyCode, monetaryValueTextFormatted)
         val convertedMonetaryValue = convertMoney(unformattedMonetaryValue)
 
-        monetaryValueEditText = formattingMonetaryValue(baseCurrencyCode, unformattedMonetaryValue)
+        monetaryValueEditText = Formatter.formatTextForSelectedCurrency(baseCurrencyCode, monetaryValueTextFormatted)
         editTextMonetaryValueToBeConverted.postValue(monetaryValueEditText)
 
-        monetaryValueTextView = formattingMonetaryValue(targetCurrencyCode, convertedMonetaryValue)
+        monetaryValueTextView = Formatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
         textViewMonetaryValueConverted.postValue(monetaryValueTextView)
 
     }
@@ -136,14 +136,13 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
 
             else -> {
 
-                val unformattedMonetaryValue = clearMonetaryValueFormatting(previousCurrencyCode, monetaryValueEditText)
-
+                val unformattedMonetaryValue = Formatter.clearTextFormatting(previousCurrencyCode, monetaryValueEditText)
                 val convertedMonetaryValue = convertMoney(unformattedMonetaryValue)
 
-                monetaryValueEditText = formattingMonetaryValue(baseCurrencyCode, unformattedMonetaryValue)
+                monetaryValueEditText = Formatter.formatTextForSelectedCurrency(baseCurrencyCode, unformattedMonetaryValue)
                 editTextMonetaryValueToBeConverted.postValue(monetaryValueEditText)
 
-                monetaryValueTextView = formattingMonetaryValue(targetCurrencyCode, convertedMonetaryValue)
+                monetaryValueTextView = Formatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
                 textViewMonetaryValueConverted.postValue(monetaryValueTextView)
 
                 previousCurrencyCode = baseCurrencyCode
@@ -155,18 +154,6 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     private fun convertMoney(stringEditable: String): String {
 
         return (stringEditable.toDouble() * conversionRate).toString()
-
-    }
-
-    private fun clearMonetaryValueFormatting(currencyCode: String, monetaryValueTextFormatted: String): String {
-
-        return Formatter.clearTextFormatting(currencyCode, monetaryValueTextFormatted)
-
-    }
-
-    private fun formattingMonetaryValue(currencyCode: String, monetaryValueText: String): String {
-
-        return Formatter.formatTextForSelectedCurrency(currencyCode, monetaryValueText)
 
     }
 
