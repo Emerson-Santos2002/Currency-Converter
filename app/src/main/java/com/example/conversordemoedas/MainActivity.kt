@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
             var userSelect = false
 
-            val touchListener = View.OnTouchListener { v, event ->
+            val touchListener = View.OnTouchListener { _, _ ->
                 userSelect = true
                 false
             }
