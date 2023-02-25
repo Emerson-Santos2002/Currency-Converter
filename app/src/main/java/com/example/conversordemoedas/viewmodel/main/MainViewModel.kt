@@ -120,7 +120,7 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
         val unformattedMonetaryValue = Formatter.clearTextFormatting(baseCurrencyCode, monetaryValueTextFormatted)
         val convertedMonetaryValue = convertMoney(unformattedMonetaryValue)
 
-        monetaryValueEditText = Formatter.formatTextForSelectedCurrency(baseCurrencyCode, monetaryValueTextFormatted)
+        monetaryValueEditText = Formatter.formatTextForSelectedCurrency(baseCurrencyCode, unformattedMonetaryValue)
         editTextMonetaryValueToBeConverted.postValue(monetaryValueEditText)
 
         monetaryValueTextView = Formatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
