@@ -58,7 +58,7 @@ faça o download da <a href="apk/app-debug.apk?raw=true">APK diretamente</a>. Vo
 
 ## API de terceiros
 
-Conversor de moedas usa a Currency API do usuário do Github [fawazahmed0](https://github.com/fawazahmed0/currency-api) para suas chamadas REST<br>
+Conversor de moedas usa a Currency API do usuário do Github [fawazahmed0](https://github.com/fawazahmed0/currency-api) para suas chamadas REST.<br>
 Esta API disponibiliza gratuitamente uma API REST completa de lista de moedas e suas taxas de conversão.
 
 ## Features
