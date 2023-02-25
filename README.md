@@ -30,34 +30,31 @@ faça o download da <a href="apk/app-debug.apk?raw=true">APK diretamente</a>. Vo
 
 ## Tecnologias usadas e bibliotecas de código aberto
 
-- Minimum SDK level COLOQUE AQUI A APK MINIMA
-- [Linguagem Kotlin](https://kotlinlang.org/) OU JAVA SE USAR JAVA
+- Minimum SDK level 23
+- [Linguagem Kotlin](https://kotlinlang.org/)
 
-- Jetpack - LISTE O MÁXIMO DE COMPONENTES DO JETPACK QUE VOCÊ USA
+- Jetpack -
   - Lifecycle: Observe os ciclos de vida do Android e manipule os estados da interface do usuário após as alterações do ciclo de vida.
+  - LiveData: Notifica as estruturas de Views quando há alterações nas informações da ViewModel.
   - ViewModel: Gerencia o detentor de dados relacionados à interface do usuário e o ciclo de vida. Permite que os dados sobrevivam a alterações de configuração, como rotações de tela.
-  - ViewBinding: Liga os componentes do XML no Kotlin através de uma classe que garante segurança de tipo e outras vantagens.
-  - Room: Biblioteca de abstração do banco de dados SQLite que garante segurança em tempo de compilação e facilidade de uso.
+  - DataBinding: Vincula dados observáveis a elementos da interface do usuário em seu layout declarativamente atráves do binding.
   - Custom Views: View customizadas feitas do zero usando XML.
   - [...]
 
-- Arquitetura - LISTE BREVEMENTE OS COMPONENTES DA SUA ARQUITETURA UTILIZADA
+- Arquitetura - 
   - MVVM (View - ViewModel - Model)
-  - Comunicação da ViewModel com a View através de LiveData
-  - Comunicação da ViewModel com a Model através de Kotlin Flow
+  - Comunicação da ViewModel com a View através de LiveData.
+  - Comunicação da ViewModel com a Model através do repositório que executa as requisições Web.
   - Repositories para abstração da comunidação com a camada de dados.
   
-- Bibliotecas - LISTE TODAS AS BIBLIOTECAS USADAS NO PROJETO, COM LINK E DESCRIÇÃO BREVE DO QUE ELA FAZ
+- Bibliotecas - 
   - [Retrofit2 & OkHttp3](https://github.com/square/retrofit): Para realizar requisições seguindo o padrão HTTP.
-  - [Glide](https://github.com/bumptech/glide): Para carregamento de imagens e cacheamento das mesmas.
-  - [Timber](https://github.com/JakeWharton/timber): Para registros de logs mais amigáveis que facilitam o debug.
-  - [...]
+  - [Google/Gson](https://github.com/google/gson): Para realizar a conversão da requisição no formato Gson.
 
 ## Arquitetura
-APRESENTE A ARQUITETURA UTILIZADA NO PROJETO
-**Nome do aplicativo** utiliza a arquitetura MVVM e o padrão de Repositories, que segue as [recomendações oficiais do Google](https://developer.android.com/topic/architecture).
+**Conversor De Moedas** utiliza a arquitetura MVVM, o padrão de Repositories e Singleton, que segue as [recomendações oficiais do Google](https://developer.android.com/topic/architecture).
 </br></br>
-ADICIONE UM FLUXOGRAMA DA ARQUITETURA UTILIZADA - https://excalidraw.com/
+<img alt="screenshot" width="60%" src="screenshots/arquitetura.png"/>
 <br>
 
 ## API de terceiros
