@@ -39,7 +39,6 @@ faça o download da <a href="apk/app-debug.apk?raw=true">APK diretamente</a>. Vo
   - ViewModel: Gerencia o detentor de dados relacionados à interface do usuário e o ciclo de vida. Permite que os dados sobrevivam a alterações de configuração, como rotações de tela.
   - DataBinding: Vincula dados observáveis a elementos da interface do usuário em seu layout declarativamente atráves do binding.
   - Custom Views: View customizadas feitas do zero usando XML.
-  - [...]
 
 - Arquitetura - 
   - MVVM (View - ViewModel - Model)
@@ -59,24 +58,35 @@ faça o download da <a href="apk/app-debug.apk?raw=true">APK diretamente</a>. Vo
 
 ## API de terceiros
 
-COLOQUE O NOME, LINK E DESCRIÇÃO DAS APIS UTILIZADAS NO PROJETO
+Conversor de moedas usa a Currency API do usuário do Github [fawazahmed0](https://github.com/fawazahmed0/currency-api) para suas chamadas REST<br>
+Esta API disponibiliza gratuitamente uma API REST completa de lista de moedas e suas taxas de conversão.
 
 ## Features
 
-### Feature 1
+### Conversão de moedas
 <img src="screenshots/feature-1.gif" width="25%"/>
 
-Texto de exemplo
+Informação no topo sobre as moedas e taxa de conversão, seleção de moedas utilizando a Custom View Spinner.
 
-### Feature 2
+### Inversão das moedas
 <img src="screenshots/feature-2.gif" width="25%"/>
 
-Texto de Exemplo.
+Formatação e Conversão de moedas de forma dinâmica com base na digitação do usuário utilizando Listeners e bibliotecas de formatação do java. Inversão das moedas através de um evento de clique.
 
 # Licença
 
-COLOQUE A LICENÇA - https://opensource.org/licenses
-
 ```xml
+   Copyright [2023] [Emerson Dos Santos Silva]
 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
 ```
