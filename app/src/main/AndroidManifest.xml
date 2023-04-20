@@ -5,7 +5,7 @@
     <application
         android:name=".CurrencyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_icon_currency"
+        android:icon="@mipmap/ic_icon_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.ConversorDeMoedas">
