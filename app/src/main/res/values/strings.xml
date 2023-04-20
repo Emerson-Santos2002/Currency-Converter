@@ -13,20 +13,28 @@
     <string-array name="currency_list_default">
         //Real brasileiro
         <item>brl</item>
+
         //Dólar americano
         <item>usd</item>
+
         /Euro
         <item>eur</item>
+
         //Libra esterlina britânica
         <item>gbp</item>
+
         //Iene japonês
         <item>jpy</item>
+
         //Dólar australiano
         <item>aud</item>
+
         //Franco suiço
         <item>chf</item>
+
         //Dólar canadense
         <item>cad</item>
+
         //Yuan chinês
         <item>rmb</item>
     </string-array>

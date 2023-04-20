@@ -1,4 +1,4 @@
-package com.example.conversordemoedas.formatter
+package com.example.conversordemoedas.util
 
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -6,7 +6,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
 
-class Formatter {
+class TextFormatter {
 
     companion object {
 

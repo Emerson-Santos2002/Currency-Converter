@@ -14,9 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.conversordemoedas.databinding.ActivityMainBinding
 import com.example.conversordemoedas.repositories.MainRepository
 import com.example.conversordemoedas.rest.RetrofitService
-import com.example.conversordemoedas.interaction.MainInteraction
-import com.example.conversordemoedas.viewmodel.main.MainViewModel
-import com.example.conversordemoedas.viewmodel.main.MainViewModelFactory
+import com.example.conversordemoedas.viewmodel.MainViewModel
+import com.example.conversordemoedas.viewmodel.MainViewModelFactory
 
 /**
  * Única classe de view da aplicação, cuida dos componentes de visualização e dos parâmetros base da aplicação
@@ -24,7 +23,6 @@ import com.example.conversordemoedas.viewmodel.main.MainViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainInteraction: MainInteraction
     private lateinit var viewModel: MainViewModel
     private lateinit var currencyList: List<String>
     private lateinit var spinnerAdapter: ArrayAdapter<String>
@@ -51,8 +49,6 @@ class MainActivity : AppCompatActivity() {
             MainViewModelFactory(MainRepository(retrofitService = retrofitService))
         )[MainViewModel::class.java]
 
-        mainInteraction = MainInteraction(viewModel)
-
         viewModel.getAllCurrencies(context = applicationContext)
     }
 
@@ -72,7 +68,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         setButtonReverse()
-        binding.editTextMonetaryValueToBeConverted.addTextChangedListener(textWatcher)
+        binding.editTextMonetaryValueToBeConverted.addTextChangedListener(textWatcher())
     }
 
     /**
@@ -114,8 +110,8 @@ class MainActivity : AppCompatActivity() {
             setDefaultTextInformation(rate)
 
             if(binding.editTextMonetaryValueToBeConverted.text.toString().isNotEmpty()){
-                binding.editTextMonetaryValueToBeConverted.removeTextChangedListener(textWatcher)
-                mainInteraction.rateChangedWithTextTyped()
+                binding.editTextMonetaryValueToBeConverted.removeTextChangedListener(textWatcher())
+                viewModel.rateChangedWithTextTyped()
             }
         }
     }
@@ -125,10 +121,10 @@ class MainActivity : AppCompatActivity() {
      * Remove o changedListener, pois ao fazer a formatação do texto ele entederá como uma nova mudança de texto,
      * entrando em um ciclo infinito de formatação.
      * o ChangedListener será adicionado novamente depois do valor formatado ser adicionado no Observer do EditText.
-     * @see mainInteraction chama a função para formatar o texto.
+     * @see viewModel chama a função para formatar o texto.
      */
 
-    private val textWatcher = object : TextWatcher {
+    private fun textWatcher() = object : TextWatcher {
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -136,9 +132,12 @@ class MainActivity : AppCompatActivity() {
 
         override fun afterTextChanged(textEditable: Editable?) {
 
-            binding.editTextMonetaryValueToBeConverted.removeTextChangedListener(this)
-            mainInteraction.textChanged(textEditable.toString())
-
+            textEditable?.let {
+                if (it.isNotEmpty()){
+                    binding.editTextMonetaryValueToBeConverted.removeTextChangedListener(this)
+                    viewModel.textFormattingMonetaryValue(it.toString())
+                }
+            }
         }
     }
 
@@ -178,31 +177,24 @@ class MainActivity : AppCompatActivity() {
             }
 
             val itemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
                     if (userSelect){
                         when (parent) {
 
-                            spinnerSelectorBaseCurrency -> { mainInteraction.updateBaseCurrencyCode(position) }
-
-                            spinnerSelectorTargetCurrency -> { mainInteraction.updateTargetCurrencyCode(position) }
-
+                            spinnerSelectorBaseCurrency -> { viewModel.updateBaseCurrency(position) }
+                            spinnerSelectorTargetCurrency -> { viewModel.updateTargetCurrency(position) }
                             else -> Log.i("emerson", "parent não encontrado")
-
                         }
                         userSelect = false
                     }
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-
             spinnerSelectorBaseCurrency.setOnTouchListener(touchListener)
             spinnerSelectorTargetCurrency.setOnTouchListener(touchListener)
             spinnerSelectorBaseCurrency.onItemSelectedListener = itemSelectedListener
             spinnerSelectorTargetCurrency.onItemSelectedListener = itemSelectedListener
-
         }
     }
 
@@ -218,7 +210,7 @@ class MainActivity : AppCompatActivity() {
             println("editText: $formattedText")
             binding.editTextMonetaryValueToBeConverted.setText(formattedText)
             binding.editTextMonetaryValueToBeConverted.setSelection(formattedText.length)
-            binding.editTextMonetaryValueToBeConverted.addTextChangedListener(textWatcher)
+            binding.editTextMonetaryValueToBeConverted.addTextChangedListener(textWatcher())
 
         }
     }
@@ -259,9 +251,7 @@ class MainActivity : AppCompatActivity() {
 
                 spinnerSelectorBaseCurrency.setSelection(targetCurrencyPosition)
                 spinnerSelectorTargetCurrency.setSelection(baseCurrencyPosition)
-
-                mainInteraction.reverseCurrencies()
-
+                viewModel.reverseCurrencies()
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.conversordemoedas.viewmodel.main
+package com.example.conversordemoedas.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

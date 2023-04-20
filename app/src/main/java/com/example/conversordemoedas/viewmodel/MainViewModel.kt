@@ -1,4 +1,4 @@
-package com.example.conversordemoedas.viewmodel.main
+package com.example.conversordemoedas.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -6,14 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.example.conversordemoedas.MainActivity
 import com.example.conversordemoedas.R
 import com.example.conversordemoedas.repositories.MainRepository
-import com.example.conversordemoedas.formatter.Formatter
+import com.example.conversordemoedas.util.TextFormatter
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Response
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
-
-
 
     private var baseCurrencyCode : String = ""
     private var targetCurrencyCode : String = ""
@@ -72,10 +70,10 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
         repository.getAllCurrencies().enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
 
-                response.body()?.keySet()?.iterator()?.forEach { currency ->
+                val listCurrenciesDefault: List<String> =
+                    context.resources.getStringArray(R.array.currency_list_default).toList()
 
-                    val listCurrenciesDefault: List<String> =
-                        context.resources.getStringArray(R.array.currency_list_default).toList()
+                response.body()?.keySet()?.iterator()?.forEach { currency ->
 
                     if (currency in listCurrenciesDefault)
                         currencyList.add(currency)
@@ -86,11 +84,8 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
                 errorMessageCallBack.postValue(t.message)
-
             }
-
         })
     }
 
@@ -117,13 +112,13 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
 
     fun textFormattingMonetaryValue(monetaryValueTextFormatted: String) {
 
-        val unformattedMonetaryValue = Formatter.clearTextFormatting(baseCurrencyCode, monetaryValueTextFormatted)
+        val unformattedMonetaryValue = TextFormatter.clearTextFormatting(baseCurrencyCode, monetaryValueTextFormatted)
         val convertedMonetaryValue = convertMoney(unformattedMonetaryValue)
 
-        monetaryValueEditText = Formatter.formatTextForSelectedCurrency(baseCurrencyCode, unformattedMonetaryValue)
+        monetaryValueEditText = TextFormatter.formatTextForSelectedCurrency(baseCurrencyCode, unformattedMonetaryValue)
         editTextMonetaryValueToBeConverted.postValue(monetaryValueEditText)
 
-        monetaryValueTextView = Formatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
+        monetaryValueTextView = TextFormatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
         textViewMonetaryValueConverted.postValue(monetaryValueTextView)
 
     }
@@ -136,13 +131,13 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
 
             else -> {
 
-                val unformattedMonetaryValue = Formatter.clearTextFormatting(previousCurrencyCode, monetaryValueEditText)
+                val unformattedMonetaryValue = TextFormatter.clearTextFormatting(previousCurrencyCode, monetaryValueEditText)
                 val convertedMonetaryValue = convertMoney(unformattedMonetaryValue)
 
-                monetaryValueEditText = Formatter.formatTextForSelectedCurrency(baseCurrencyCode, unformattedMonetaryValue)
+                monetaryValueEditText = TextFormatter.formatTextForSelectedCurrency(baseCurrencyCode, unformattedMonetaryValue)
                 editTextMonetaryValueToBeConverted.postValue(monetaryValueEditText)
 
-                monetaryValueTextView = Formatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
+                monetaryValueTextView = TextFormatter.formatTextForSelectedCurrency(targetCurrencyCode, convertedMonetaryValue)
                 textViewMonetaryValueConverted.postValue(monetaryValueTextView)
 
                 previousCurrencyCode = baseCurrencyCode
