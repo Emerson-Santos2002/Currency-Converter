@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".CurrencyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon_currency"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.ConversorDeMoedas">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

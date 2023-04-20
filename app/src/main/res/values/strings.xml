@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Conversor de Moedas</string>
+    <string name="app_name">Currency</string>
 
     //parte da API
     <string name="info_da_moeda_base">1,00 %1$s hoje</string>
